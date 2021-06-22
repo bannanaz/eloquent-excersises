@@ -1,69 +1,13 @@
-//chapter 2, program structure
-
-let theNumber = Number(prompt("Pick a number"));
-if (!Number.isNaN(theNumber)) {
-  console.log("Your number is the square root of " + theNumber * theNumber);
-} else {
-  console.log("Hey. Why didn't you give me a number?");
-}
-
-//loop 2^10
-let result = 1;
-let counter = 0;
-while (counter < 10) {
-  result = result * 2;
-  counter = counter + 1;
-}
-console.log(result);
-
-//for loop 2^10
-let resultloop = 1;
-for (let counter = 0; counter < 10; counter++) {
-  resultloop = resultloop * 2;
-}
-console.log(result);
-
-/*prompt loop
-let yourName;
-do {
-  yourName = prompt("Who are you?");
-} while (!yourName);
-console.log(yourName);*/
-
-for (let number = 0; number <= 12; number += 2) {
-  console.log(number);
-}
-
-//break statement
-for (let current = 20; ; current = current + 1) {
-  if (current % 7 == 0) {
-    console.log(current);
-    break;
-  }
-}
-
-//switch
-switch (prompt("What is the weather like?")) {
-  case "rainy":
-    console.log("Remember to bring an umbrella.");
-    break;
-  case "sunny":
-    console.log("Dress lightly.");
-  case "cloudy":
-    console.log("Go outside.");
-    break;
-  default:
-    console.log("Unknown weather type!");
-    break;
-}
-
 //excersises chap 2
+
+//print triangle
 function triangle() {
   for (let line = "#"; line.length < 8; line += "#") {
     console.log(line);
   }
 }
 
+//divisable by 3, 5 or both
 function fizzBuzz() {
   for (let num = 0; num <= 100; num++) {
     let output = "";
@@ -75,6 +19,7 @@ function fizzBuzz() {
   }
 }
 
+//nested loop, create chessboard
 let size = 8;
 let board = "";
 
@@ -90,7 +35,7 @@ for (let y = 0; y < size; y++) {
 }
 console.log(board);
 
-//chapter 3, functions
+//chapter 3
 
 //nested scope
 let factor = 2;
@@ -110,33 +55,9 @@ const hummus = function (factor) {
   ingredient(0.5, "teaspoon", "cumin");
 };
 
-/*functions as values
-let launchMissiles = function () {
-  missileSystem.launch("now");
-};
-if (safeMode) {
-  launchMissiles = function () {
-    do nothing
-  };
-}*/
-
-//declaration (order)
-console.log("The future says:", future());
-
-function future() {
-  return "You'll never have flying cars";
-}
-//arrow functions
-const power = (base, exponent) => {
-  let result = 1;
-  for (let count = 0; count < exponent; count++) {
-    result *= base;
-  }
-  return result;
-};
-
 //excersises chap 3
 
+//return min value of two arguments
 function min(x, y) {
   if (x < y) {
     return x;
@@ -145,12 +66,14 @@ function min(x, y) {
   }
 }
 
+//check if number is even
 function isEven(n) {
   if (n == 0) return true;
   else if (n == 1) return false;
   else if (n < 0) return isEven(-n);
   else return isEven(n - 2);
 }
+
 console.log(isEven(50));
 // → true
 console.log(isEven(75));
@@ -158,6 +81,7 @@ console.log(isEven(75));
 console.log(isEven(-1));
 // → ??
 
+//count character
 function countChar(string, ch) {
   let counted = 0;
   for (let i = 0; i < string.length; i++) {
@@ -168,6 +92,102 @@ function countChar(string, ch) {
   return counted;
 }
 
+//count Bs
 function countBs(string) {
   return countChar(string, "B");
+}
+
+//chapter 4
+
+//create array from start and end numbers
+function range(start, end) {
+  var arr = [];
+  if (start < end) {
+    for (var i = start; i <= end; i++) arr.push(i);
+  } else {
+    for (var i = start; i >= end; i--) arr.push(i);
+  }
+  return arr;
+}
+
+//get the value of numbers in array
+function sum(arr) {
+  let total = 0;
+  for (let value of arr) {
+    total += value;
+  }
+  return total;
+}
+
+console.log(sum(range(1, 10)));
+
+//reverse array (return new array)
+function reverseArray(array) {
+  let output = [];
+  for (let i = array.length - 1; i >= 0; i--) {
+    output.push(array[i]);
+  }
+  return output;
+}
+
+console.log(reverseArray([1, 2, 3]));
+
+//reverse array (return same array)
+function reverseArrayInPlace(array) {
+  for (let i = 0; i < Math.floor(array.length / 2); i++) {
+    let old = array[i];
+    array[i] = array[array.length - 1 - i];
+    array[array.length - 1 - i] = old;
+  }
+  return array;
+}
+
+//create list from array
+function arrayToList(array) {
+  let list = null;
+  for (let i = array.length - 1; i >= 0; i--) {
+    list = { value: array[i], rest: list };
+  }
+  return list;
+}
+
+//create array from list
+function listToArray(list) {
+  let array = [];
+  for (let node = list; node; node = node.rest) {
+    array.push(node.value);
+  }
+  return array;
+}
+
+//add element to the front of list
+function prepend(value, list) {
+  return { value, rest: list };
+}
+
+//return element at given position (n)
+function nth(list, n) {
+  if (!list) return undefined;
+  else if (n == 0) return list.value;
+  else return nth(list.rest, n - 1);
+}
+console.log(nth(arrayToList([10, 20, 30]), 1));
+
+//deep equal comparison
+function deepEqual(a, b) {
+  if (a === b) return true;
+
+  if (a == null || typeof a != "object" || b == null || typeof b != "object")
+    return false;
+
+  let keysA = Object.keys(a),
+    keysB = Object.keys(b);
+
+  if (keysA.length != keysB.length) return false;
+
+  for (let key of keysA) {
+    if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
+  }
+
+  return true;
 }
